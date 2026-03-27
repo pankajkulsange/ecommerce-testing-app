@@ -1,9 +1,25 @@
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+
 function App() {
   return (
-    <div>
-      <h1>My E-commerce Testing App</h1>
-      <p>Learning React Step by Step 🚀</p>
-    </div>
+    <Router>
+      <div>
+        <nav style={{ marginBottom: "20px" }}>
+          <Link to="/">Home</Link> |{" "}
+          <Link to="/login">Login</Link> |{" "}
+          <Link to="/signup">Signup</Link>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
