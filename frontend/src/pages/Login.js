@@ -13,18 +13,36 @@ function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log("Login Data:", formData);
+  if (!formData.email || !formData.password) {
+    alert("All fields required!");
+    return;
+  }
 
-    if (!formData.email || !formData.password) {
-      alert("All fields required!");
+  try {
+    const response = await fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message);
       return;
     }
 
-    alert("Login clicked (UI only)");
-  };
+    alert(data.message);
+  } catch (error) {
+    console.error(error);
+    alert("Server error");
+  }
+};
 
   return (
     <div>

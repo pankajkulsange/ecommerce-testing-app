@@ -14,19 +14,31 @@ function Signup() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    console.log("Signup Data:", formData);
+  if (!formData.email || !formData.password) {
+    alert("Email and Password are required!");
+    return;
+  }
 
-    // Basic validation
-    if (!formData.email || !formData.password) {
-      alert("Email and Password are required!");
-      return;
-    }
+  try {
+    const response = await fetch("http://localhost:5000/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-    alert("Signup successful (UI only)");
-  };
+    const data = await response.json();
+
+    alert(data.message);
+  } catch (error) {
+    console.error(error);
+    alert("Error connecting to server");
+  }
+};
 
   return (
     <div>
