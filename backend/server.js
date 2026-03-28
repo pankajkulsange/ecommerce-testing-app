@@ -18,6 +18,44 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
+let cart = [];
+
+app.get("/cart", (req, res) => {
+  res.json(cart);
+});
+
+app.post("/cart", (req, res) => {
+  const product = req.body;
+
+  cart.push(product);
+
+  res.json({ message: "Item added to cart" });
+});
+
+// Dummy product data
+const products = [
+  {
+    id: 1,
+    name: "iPhone 14",
+    price: 70000,
+  },
+  {
+    id: 2,
+    name: "Samsung Galaxy S23",
+    price: 65000,
+  },
+  {
+    id: 3,
+    name: "OnePlus 11",
+    price: 60000,
+  },
+];
+
+// Get all products
+app.get("/products", (req, res) => {
+  res.json(products);
+});
+
 // Fake database (temporary)
 let users = [];
 
@@ -38,9 +76,7 @@ app.post("/signup", (req, res) => {
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
-  const user = users.find(
-    (u) => u.email === email && u.password === password
-  );
+  const user = users.find((u) => u.email === email && u.password === password);
 
   if (!user) {
     return res.status(401).json({ message: "Invalid credentials" });
