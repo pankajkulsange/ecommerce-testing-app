@@ -27,9 +27,38 @@ app.get("/cart", (req, res) => {
 app.post("/cart", (req, res) => {
   const product = req.body;
 
-  cart.push(product);
+  const existing = cart.find((item) => item.id === product.id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
 
   res.json({ message: "Item added to cart" });
+});
+
+app.delete("/cart/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+
+  cart = cart.filter((item) => item.id !== id);
+
+  res.json({ message: "Item removed from cart" });
+});
+
+app.put("/cart/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const { quantity } = req.body;
+
+  const item = cart.find((i) => i.id === id);
+
+  if (!item) {
+    return res.status(404).json({ message: "Item not found" });
+  }
+
+  item.quantity = quantity;
+
+  res.json({ message: "Quantity updated" });
 });
 
 // Dummy product data
